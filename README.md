@@ -1,89 +1,96 @@
-# Data Science Project Boilerplate
+# Image classification environment set-up
 
-This boilerplate is designed to kickstart data science projects by providing a basic setup for database connections, data processing, and machine learning model development. It includes a structured folder organization for your datasets and a set of pre-defined Python packages necessary for most data science tasks.
+The machine learning project template repository provided via the project tutorial on 4Geeks is not sufficient to complete this project. Take a look for yourself, the reading materials and provided solution use Google's TensorFlow - which is not included in the `requirements.txt`. Using this fork of the repo will get you up and running in a codespace in just a few minutes.
 
-## Structure
+# 1. Get a Kaggle account
 
-The project is organized as follows:
+The dataset is hosted on Kaggle. To download it you need a free account. It's easy to set up via the link below, all you need is an email address:
 
-- `app.py` - The main Python script that you run for your project.
-- `explore.py` - A notebook to explore data, play around, visualize, clean, etc. Ideally the notebook code should be migrated to the app.py when moving to production.
-- `utils.py` - This file contains utility code for operations like database connections.
-- `requirements.txt` - This file contains the list of necessary python packages.
-- `models/` - This directory should contain your SQLAlchemy model classes.
-- `data/` - This directory contains the following subdirectories:
-  - `interin/` - For intermediate data that has been transformed.
-  - `processed/` - For the final data to be used for modeling.
-  - `raw/` - For raw data without any processing.
- 
-    
-## Setup
+[Login or Register | Kaggle](https://www.kaggle.com/account/login?phase=startRegisterTab)
 
-**Prerequisites**
+Once you have an account, you need to generate and save an API access token so that you can download the dataset from within a Codespace:
 
-Make sure you have Python 3.11+ installed on your. You will also need pip for installing the Python packages.
+- From the homepage, click on your profile in the upper left
+- Select 'Settings'
+- Under API, click 'Create New Token'
+- Click 'Continue'
+- Save the key file on you local machine
 
-**Installation**
+The contents of the file should look like this:
 
-Clone the project repository to your local machine.
+```json
+{"username":"your-user-name","key":"a-bunch-of-letters-and-numbers"}
+```
 
-Navigate to the project directory and install the required Python packages:
+# 2. Start a codespace
+
+Training neural networks requires significant computational power. I have requested access to 8-core machines from 4Geeks for this project. Hopefully, this request will be approved by the time you are reading this. If not, we will have to stick with the usual dual core machines. The project will still work, but training the image classifier will take much longer.
+
+From this repository:
+
+- Click the 'Code' dropdown
+- Select the 'Codespaces' tab
+- Click the three dot menu at the top left of the Codespaces dropdown
+- Select 'New with options'
+- Change 'Machine type' to '8-core'
+- Click 'Create codespace'
+
+# 3. Add your Kaggle API key
+
+From your codespace, open the .env file and add your Kaggle username and key from the `kaggle.json` file you downloaded to your computer from the Kaggle site earlier.
 
 ```bash
-pip install -r requirements.txt
+export KAGGLE_USERNAME=your-user-name
+export KAGGLE_KEY=a-bunch-of-letters-and-numbers
 ```
 
-**Create a database (if needed)**
-
-Create a new database within the Postgres engine by customizing and executing the following command: `$ createdb -h localhost -U <username> <db_name>`
-Connect to the Postgres engine to use your database, manipulate tables and data: `$ psql -h localhost -U <username> <db_name>`
-NOTE: Remember to check the ./.env file information to get the username and db_name.
-
-Once you are inside PSQL you will be able to create tables, make queries, insert, update or delete data and much more!
-
-**Environment Variables**
-
-Create a .env file in the project root directory to store your environment variables, such as your database connection string:
-
-```makefile
-DATABASE_URL="your_database_connection_url_here"
-```
-
-## Running the Application
-
-To run the application, execute the app.py script from the root of the project directory:
+Then, source the environment file to export the environment variables to the codespace shell:
 
 ```bash
-python app.py
+source .env
 ```
 
-## Adding Models
+Now, your username and key are stored in `KAGGLE_USERNAME` and `KAGGLE_KEY` respectively. Placing them in environment variables makes them available to any application running in the codespace. Test it with:
 
-To add SQLAlchemy model classes, create new Python script files inside the models/ directory. These classes should be defined according to your database schema.
-
-Example model definition (`models/example_model.py`):
-
-```py
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
-
-Base = declarative_base()
-
-class ExampleModel(Base):
-    __tablename__ = 'example_table'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-
+```bash
+echo $KAGGLE_USERNAME
 ```
 
-## Working with Data
+# 4. Install requirements
 
-You can place your raw datasets in the data/raw directory, intermediate datasets in data/interim, and the processed datasets ready for analysis in data/processed.
+This step is the same as usual, but uses an updated `requirements.txt` which includes TensorFlow and some image manipulation utilities.
 
-To process data, you can modify the app.py script to include your data processing steps, utilizing pandas for data manipulation and analysis.
+```bash
+pip install -r ./requirements.txt
+```
 
-## Contributors
+# 5. Download and prepare the data
 
-This template was built as part of the 4Geeks Academy [Data Science and Machine Learning Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about [4Geeks Academy's BootCamp programs](https://4geeksacademy.com/us/programs) here.
+Finally, we can download the image dataset using the Kaggle CLI. We then need to decompress it and structure the directories so that we can use TensorFlow and Keras to create an image dataset.
 
-Other templates and resources like this can be found on the school GitHub page.
+Download the data to `data/`:
+
+```bash
+cd data/
+kaggle competitions download -c dogs-vs-cats
+```
+
+Inside of `dogs-vs-cats.zip` there are individual zip archives for the testing and training data. Unzip `dogs-vs-cats.zip` followed by `train.zip` and `test1.zip`.
+
+```bash
+unzip dogs-vs-cats.zip
+unzip train.zip
+unzip test1.zip
+```
+
+Keras expects to see our training data structured such that each image class is in it's own folder. To do this, make `dog` and `cat` folders inside of the training data directory and move the dog and cat images into them.
+
+```bash
+cd train
+mkdir dog
+mkdir cat
+mv ./dog.* ./dog/
+mv ./cat.* ./cat/
+```
+
+Easy! Now we are ready to start working on the solution in a notebook.
