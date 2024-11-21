@@ -30,7 +30,7 @@ The contents of the file should look like this:
 
 ## 2. Start a codespace
 
-Training neural networks requires significant computational power. I have requested access to 8-core machines from 4Geeks for this project. Hopefully, this request will be approved by the time you are reading this. If not, we will have to stick with the usual dual core machines. The project will still work, but training the image classifier will take much longer.
+Training neural networks requires significant computational power. I have requested access to 8-core machines from 4Geeks for this project. Hopefully, this request will be approved by the time you are reading this. If not, we will have to stick with the usual dual-core machines. The project will still work, but training the image classifier will take much longer.
 
 From this repository:
 
@@ -70,6 +70,6 @@ From you codespace terminal run the following command:
 ./get_data.sh
 ```
 
-The script downloads the data from Kaggle, decompresses it and moves the training cats and dogs into seperate directories.
+The script downloads the data from Kaggle, decompresses it and moves the training cats and dogs into separate directories.
 
 Easy! Now we can work with the data in a Jupyter notebook. Open `src/mvp.ipynb` to get started.

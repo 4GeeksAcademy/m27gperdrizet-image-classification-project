@@ -11,7 +11,7 @@ unzip data/dogs-vs-cats.zip -d data/
 unzip data/train.zip -d data/
 unzip data/test1.zip -d data/
 
-# Move the training dogs and cats into seperate directories
+# Move the training dogs and cats into separate directories
 mkdir data/train/dog
 mkdir data/train/cat
 mv data/train/dog.* data/train/dog/
