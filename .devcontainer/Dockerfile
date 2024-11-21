@@ -14,5 +14,8 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends postgresql-client
 
-# Make a blank .venv
+# Make a blank .env
 RUN touch .env
+
+# Make an empty data directory
+RUN mkdir data
