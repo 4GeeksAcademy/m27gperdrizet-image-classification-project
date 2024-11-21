@@ -8,11 +8,17 @@ The dataset is hosted on Kaggle. To download it you need a free account. It's ea
 
 [Login or Register | Kaggle](https://www.kaggle.com/account/login?phase=startRegisterTab)
 
-Once you have an account, you need to generate and save an API access token so that you can download the dataset from within a codespace:
+Once you are registered and logged in:
+
+- Go to the [Dogs vs Cats competition](https://www.kaggle.com/competitions/dogs-vs-cats) page
+- Go to the 'Data' tab
+- Scroll down and click 'Join competition'
+
+Now, you need to generate and save an API access token so that you can download the dataset from within a codespace:
 
 - From the homepage, click on your profile in the upper left
 - Select 'Settings'
-- Under API, click 'Create New Token'
+- Scroll down, under API, click 'Create New Token'
 - Click 'Continue'
 - Save the key file on you local machine
 
@@ -56,42 +62,14 @@ Now, your username and key are stored in `KAGGLE_USERNAME` and `KAGGLE_KEY` resp
 echo $KAGGLE_USERNAME
 ```
 
-## 4. Install requirements
+## 4. Download and prepare the data
 
-This step is the same as usual, but uses an updated `requirements.txt` which includes TensorFlow and some image manipulation utilities.
-
-```bash
-pip install -r ./requirements.txt
-```
-
-## 5. Download and prepare the data
-
-Finally, we can download the image dataset using the Kaggle CLI. We then need to decompress it and structure the directories so that we can use TensorFlow and Keras to create an image dataset.
-
-Download the data to `data/`:
+From you codespace terminal run the following command:
 
 ```bash
-mkdir data
-cd data
-kaggle competitions download -c dogs-vs-cats
+./get_data.sh
 ```
 
-Inside `dogs-vs-cats.zip` there are individual zip archives for the testing and training data. Unzip `dogs-vs-cats.zip` followed by `train.zip` and `test1.zip`.
+The script downloads the data from Kaggle, decompresses it and moves the training cats and dogs into seperate directories.
 
-```bash
-unzip dogs-vs-cats.zip
-unzip train.zip
-unzip test1.zip
-```
-
-Keras expects to see our training data structured such that each image class is in its own folder. To do this, make `dog` and `cat` folders inside the training data directory and move the dog and cat images into them.
-
-```bash
-cd train
-mkdir dog
-mkdir cat
-mv ./dog.* ./dog/
-mv ./cat.* ./cat/
-```
-
-Easy! Now we are ready to start working on the solution in a notebook.
+Easy! Now we can work with the data in a Jupyter notebook. Open `src/mvp.ipynb` to get started.
