@@ -38,7 +38,7 @@ From this repository:
 - Select the 'Codespaces' tab
 - Click the three dot menu at the top left of the Codespaces dropdown
 - Select 'New with options'
-- Change 'Machine type' to '8-core'
+- Change 'Machine type' to '8-core' or '16-core' if avalible, if not, leave '2-core' selected
 - Click 'Create codespace'
 
 ## 3. Add your Kaggle API key

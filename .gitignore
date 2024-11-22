@@ -1,6 +1,7 @@
 __pycache__
 .vscode
 .env
+.venv
 .learn
 sampleSubmission.csv
 dogs-vs-cats.zip
@@ -8,4 +9,3 @@ test1.zip
 train.zip
 test1
 train
-gperdrizet_solution.ipynb
